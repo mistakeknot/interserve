@@ -2,6 +2,7 @@
   "name": "clodex",
   "version": "0.1.0",
   "description": "Codex spark classifier — lightweight section classification via MCP",
+  "hooks": "./hooks/hooks.json",
   "mcpServers": {
     "clodex": {
       "type": "stdio",
