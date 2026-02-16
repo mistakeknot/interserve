@@ -1,0 +1,15 @@
+{
+  "name": "clodex",
+  "version": "0.1.0",
+  "description": "Codex spark classifier — lightweight section classification via MCP",
+  "mcpServers": {
+    "clodex": {
+      "type": "stdio",
+      "command": "${CLAUDE_PLUGIN_ROOT}/bin/launch-mcp.sh",
+      "args": [],
+      "env": {
+        "CLODEX_DISPATCH_PATH": "/root/projects/Interverse/hub/clavain/scripts/dispatch.sh"
+      }
+    }
+  }
+}
