@@ -11,6 +11,7 @@ import (
 	"github.com/mark3labs/mcp-go/server"
 	"github.com/mistakeknot/clodex/internal/classify"
 	"github.com/mistakeknot/clodex/internal/extract"
+	"github.com/mistakeknot/clodex/internal/query"
 )
 
 // RegisterAll registers all clodex MCP tools.
@@ -18,6 +19,7 @@ func RegisterAll(s *server.MCPServer, dispatchPath string) {
 	s.AddTools(
 		extractSectionsTool(),
 		classifySectionsTool(dispatchPath),
+		codexQueryTool(dispatchPath),
 	)
 }
 
@@ -95,6 +97,52 @@ func classifySectionsTool(dispatchPath string) server.ServerTool {
 			}
 
 			result := classify.Classify(ctx, dispatchPath, sections, agents)
+			return jsonResult(result)
+		},
+	}
+}
+
+func codexQueryTool(dispatchPath string) server.ServerTool {
+	return server.ServerTool{
+		Tool: mcp.NewTool("codex_query",
+			mcp.WithDescription("Ask Codex to analyze file(s) and return a compact answer. Saves Claude context by delegating file reading to Codex."),
+			mcp.WithString("question",
+				mcp.Description("The question about the file(s). Required for answer/extract modes."),
+			),
+			mcp.WithArray("files",
+				mcp.Description("Absolute file paths to analyze."),
+				mcp.Required(),
+			),
+			mcp.WithString("mode",
+				mcp.Description("Analysis mode: answer (default), summarize, or extract."),
+			),
+		),
+		Handler: func(ctx context.Context, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+			args := req.GetArguments()
+			question, _ := args["question"].(string)
+			mode, _ := args["mode"].(string)
+
+			filesRaw, ok := args["files"].([]any)
+			if !ok || len(filesRaw) == 0 {
+				return mcp.NewToolResultError("files is required (array of absolute file paths)"), nil
+			}
+
+			files := make([]string, 0, len(filesRaw))
+			for _, f := range filesRaw {
+				path, ok := f.(string)
+				if !ok {
+					continue
+				}
+				path = strings.TrimSpace(path)
+				if path != "" {
+					files = append(files, path)
+				}
+			}
+			if len(files) == 0 {
+				return mcp.NewToolResultError("files must contain at least one valid file path"), nil
+			}
+
+			result := query.Query(ctx, dispatchPath, question, files, mode)
 			return jsonResult(result)
 		},
 	}
