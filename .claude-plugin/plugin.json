@@ -1,15 +1,15 @@
 {
-  "name": "clodex",
+  "name": "interserve",
   "version": "0.1.0",
-  "description": "Clodex — Codex spark classifier and context compression via MCP",
+  "description": "Interserve — Codex spark classifier and context compression via MCP",
   "hooks": "./hooks/hooks.json",
   "mcpServers": {
-    "clodex": {
+    "interserve": {
       "type": "stdio",
       "command": "${CLAUDE_PLUGIN_ROOT}/bin/launch-mcp.sh",
       "args": [],
       "env": {
-        "CLODEX_DISPATCH_PATH": "/root/projects/Interverse/hub/clavain/scripts/dispatch.sh"
+        "INTERSERVE_DISPATCH_PATH": "/root/projects/Interverse/hub/clavain/scripts/dispatch.sh"
       }
     }
   }

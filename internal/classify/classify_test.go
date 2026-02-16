@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/mistakeknot/clodex/internal/extract"
+	"github.com/mistakeknot/interserve/internal/extract"
 )
 
 func TestBuildPromptIncludesAgentsAndHeadings(t *testing.T) {

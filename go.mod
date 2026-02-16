@@ -1,4 +1,4 @@
-module github.com/mistakeknot/clodex
+module github.com/mistakeknot/interserve
 
 go 1.23.0
 

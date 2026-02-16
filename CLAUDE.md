@@ -1,12 +1,12 @@
-# Clodex
+# Interserve
 
 Codex spark classifier and context compression — MCP server exposing `classify_sections`, `extract_sections`, and `codex_query` tools.
 
 ## Quick Commands
 
 ```bash
-cd plugins/clodex && go build -o bin/clodex-mcp ./cmd/clodex-mcp/
-cd plugins/clodex && go test ./... -v
+cd plugins/interserve && go build -o bin/interserve-mcp ./cmd/interserve-mcp/
+cd plugins/interserve && go test ./... -v
 ```
 
 ## Design Decisions (Do Not Re-Ask)

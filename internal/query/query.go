@@ -83,7 +83,7 @@ func Query(ctx context.Context, dispatchPath string, question string, files []st
 	// Build prompt and dispatch to Codex.
 	prompt := BuildPrompt(question, fileContents, mode)
 
-	promptFile, err := os.CreateTemp("", "clodex-query-prompt-*.txt")
+	promptFile, err := os.CreateTemp("", "interserve-query-prompt-*.txt")
 	if err != nil {
 		return queryError(err, files, mode, "create prompt temp file")
 	}
@@ -98,7 +98,7 @@ func Query(ctx context.Context, dispatchPath string, question string, files []st
 		return queryError(err, files, mode, "close prompt temp file")
 	}
 
-	outputFile, err := os.CreateTemp("", "clodex-query-output-*.txt")
+	outputFile, err := os.CreateTemp("", "interserve-query-output-*.txt")
 	if err != nil {
 		return queryError(err, files, mode, "create output temp file")
 	}

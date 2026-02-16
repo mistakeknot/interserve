@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# PreToolUse:Read hook — intercept large code file reads when Clodex toggle is ON.
+# PreToolUse:Read hook — intercept large code file reads when interserve toggle is ON.
 # Denies the first read and suggests codex_query. Second read always passes through.
 set -euo pipefail
 
@@ -7,9 +7,9 @@ main() {
   local project_dir flag_file payload file_path offset session_id
 
   project_dir="${CLAUDE_PROJECT_DIR:-.}"
-  flag_file="$project_dir/.claude/clodex-toggle.flag"
+  flag_file="$project_dir/.claude/interserve-toggle.flag"
 
-  # If Clodex mode is OFF, pass through
+  # If interserve mode is OFF, pass through
   [[ -f "$flag_file" ]] || exit 0
 
   command -v jq >/dev/null 2>&1 || exit 0
@@ -27,7 +27,7 @@ main() {
   # Allow /tmp/ files
   [[ "$file_path" != /tmp/* ]] || exit 0
 
-  # Allow config/doc extensions (matches clodex-audit.sh allowlist)
+  # Allow config/doc extensions (matches interserve-audit.sh allowlist)
   case "$file_path" in
     *.md|*.json|*.yaml|*.yml|*.toml|*.txt|*.csv|*.xml|*.html|*.css|*.svg|*.lock|*.cfg|*.ini|*.conf|*.env|*.pdf|*.png|*.jpg|*.gif|*.ico)
       exit 0
@@ -50,7 +50,7 @@ main() {
   if [[ -n "$session_id" ]]; then
     local file_hash flag
     file_hash=$(echo -n "$file_path" | md5sum | cut -d' ' -f1)
-    flag="/tmp/clodex-read-denied-${session_id}-${file_hash}"
+    flag="/tmp/interserve-read-denied-${session_id}-${file_hash}"
     if [[ -f "$flag" ]]; then
       exit 0
     fi
@@ -64,7 +64,7 @@ main() {
   fi
 
   cat <<ENDJSON
-{"decision": "block", "reason": "CLODEX: ${rel_path} is ${line_count} lines. Use codex_query(question='...', files=['${file_path}']) to save ~${line_count} tokens. Modes: answer (default), summarize, extract."}
+{"decision": "block", "reason": "INTERSERVE: ${rel_path} is ${line_count} lines. Use codex_query(question='...', files=['${file_path}']) to save ~${line_count} tokens. Modes: answer (default), summarize, extract."}
 ENDJSON
 }
 

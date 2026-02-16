@@ -13,17 +13,17 @@ incr_fail() { FAIL=$((FAIL + 1)); }
 SESSION_ID="test-session-$$"
 
 # Use a non-/tmp/ directory so the /tmp/ allowlist doesn't interfere
-PROJECT_DIR="/root/projects/Interverse/plugins/clodex/test/.hook-test-$$"
+PROJECT_DIR="/root/projects/Interverse/plugins/interserve/test/.hook-test-$$"
 
 cleanup() {
   rm -rf "$PROJECT_DIR"
-  rm -f /tmp/clodex-read-denied-${SESSION_ID}-*
+  rm -f /tmp/interserve-read-denied-${SESSION_ID}-*
 }
 trap cleanup EXIT
 
-# Create a project dir with clodex toggle flag
+# Create a project dir with interserve toggle flag
 mkdir -p "$PROJECT_DIR/.claude"
-echo "2026-02-16T00:00:00-08:00" > "$PROJECT_DIR/.claude/clodex-toggle.flag"
+echo "2026-02-16T00:00:00-08:00" > "$PROJECT_DIR/.claude/interserve-toggle.flag"
 
 # Create test files
 LARGE_GO="$PROJECT_DIR/internal/foo/big.go"
@@ -76,7 +76,7 @@ run_hook() {
 echo "=== Hook Tests ==="
 
 # Test 1: No flag file → pass through
-echo "--- Test 1: No clodex flag → pass through ---"
+echo "--- Test 1: No interserve flag → pass through ---"
 NO_FLAG_DIR="$PROJECT_DIR/no-flag-subdir"
 mkdir -p "$NO_FLAG_DIR"
 INPUT='{"tool_input":{"file_path":"'"$LARGE_GO"'"},"session_id":"'"$SESSION_ID"'"}'
@@ -94,7 +94,7 @@ run_hook "small file" "$PROJECT_DIR" "$INPUT" "pass"
 
 # Test 4: Large .go file with flag → deny with codex_query hint
 echo "--- Test 4: Large .go file → deny ---"
-rm -f /tmp/clodex-read-denied-${SESSION_ID}-*
+rm -f /tmp/interserve-read-denied-${SESSION_ID}-*
 INPUT='{"tool_input":{"file_path":"'"$LARGE_GO"'"},"session_id":"'"$SESSION_ID"'"}'
 run_hook "large go file denied" "$PROJECT_DIR" "$INPUT" '"decision".*"block"'
 
@@ -105,13 +105,13 @@ run_hook "second read passes" "$PROJECT_DIR" "$INPUT" "pass"
 
 # Test 6: Read with offset → pass through
 echo "--- Test 6: Read with offset → pass through ---"
-rm -f /tmp/clodex-read-denied-${SESSION_ID}-*
+rm -f /tmp/interserve-read-denied-${SESSION_ID}-*
 INPUT='{"tool_input":{"file_path":"'"$LARGE_GO"'","offset":50},"session_id":"'"$SESSION_ID"'"}'
 run_hook "offset read passes" "$PROJECT_DIR" "$INPUT" "pass"
 
 # Test 7: /tmp/ file → pass through
 echo "--- Test 7: /tmp/ file → pass through ---"
-TMP_GO=$(mktemp /tmp/clodex-test-XXXX.go)
+TMP_GO=$(mktemp /tmp/interserve-test-XXXX.go)
 python3 -c "
 for i in range(300):
     print(f'// line {i+1}')
@@ -132,7 +132,7 @@ run_hook "json file passes" "$PROJECT_DIR" "$INPUT" "pass"
 
 # Test 9: Deny message includes codex_query hint
 echo "--- Test 9: Deny message quality ---"
-rm -f /tmp/clodex-read-denied-${SESSION_ID}-*
+rm -f /tmp/interserve-read-denied-${SESSION_ID}-*
 INPUT='{"tool_input":{"file_path":"'"$LARGE_GO"'"},"session_id":"'"$SESSION_ID"'"}'
 run_hook "deny includes codex_query" "$PROJECT_DIR" "$INPUT" "codex_query"
 

@@ -200,7 +200,7 @@ func TestQueryNoFiles(t *testing.T) {
 
 func writeTempFile(t *testing.T, content string) string {
 	t.Helper()
-	f, err := os.CreateTemp("", "clodex-test-*.go")
+	f, err := os.CreateTemp("", "interserve-test-*.go")
 	if err != nil {
 		t.Fatal(err)
 	}

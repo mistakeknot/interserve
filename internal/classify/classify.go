@@ -9,7 +9,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/mistakeknot/clodex/internal/extract"
+	"github.com/mistakeknot/interserve/internal/extract"
 )
 
 const (
@@ -73,7 +73,7 @@ func Classify(ctx context.Context, dispatchPath string, sections []extract.Secti
 
 	prompt := BuildPrompt(sections, agents)
 
-	promptFile, err := os.CreateTemp("", "clodex-prompt-*.txt")
+	promptFile, err := os.CreateTemp("", "interserve-prompt-*.txt")
 	if err != nil {
 		return classifyError(err, sections, agents, "create prompt temp file")
 	}
@@ -88,7 +88,7 @@ func Classify(ctx context.Context, dispatchPath string, sections []extract.Secti
 		return classifyError(err, sections, agents, "close prompt temp file")
 	}
 
-	outputFile, err := os.CreateTemp("", "clodex-output-*.json")
+	outputFile, err := os.CreateTemp("", "interserve-output-*.json")
 	if err != nil {
 		return classifyError(err, sections, agents, "create output temp file")
 	}

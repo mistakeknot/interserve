@@ -5,7 +5,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/mistakeknot/clodex/internal/extract"
+	"github.com/mistakeknot/interserve/internal/extract"
 )
 
 // AgentDomain defines a domain specialist that can receive section assignments.

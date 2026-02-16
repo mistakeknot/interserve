@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
-# Integration test for clodex MCP server — extract_sections + codex_query validation
+# Integration test for interserve MCP server — extract_sections + codex_query validation
 # (classify_sections requires live Codex CLI, tested separately)
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PLUGIN_ROOT="$(dirname "$SCRIPT_DIR")"
-BINARY="${PLUGIN_ROOT}/bin/clodex-mcp"
+BINARY="${PLUGIN_ROOT}/bin/interserve-mcp"
 
-echo "=== Building clodex-mcp ==="
+echo "=== Building interserve-mcp ==="
 cd "$PLUGIN_ROOT"
-go build -o "$BINARY" ./cmd/clodex-mcp/
+go build -o "$BINARY" ./cmd/interserve-mcp/
 
 echo "=== Creating test document ==="
-TEST_DOC=$(mktemp /tmp/clodex-test-XXXX.md)
+TEST_DOC=$(mktemp /tmp/interserve-test-XXXX.md)
 cat > "$TEST_DOC" << 'EOF'
 ---
 title: Test Document
