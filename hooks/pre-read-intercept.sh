@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# PreToolUse:Read hook — intercept large code file reads when clodex-toggle is ON.
+# PreToolUse:Read hook — intercept large code file reads when Clodex toggle is ON.
 # Denies the first read and suggests codex_query. Second read always passes through.
 set -euo pipefail
 
@@ -9,7 +9,7 @@ main() {
   project_dir="${CLAUDE_PROJECT_DIR:-.}"
   flag_file="$project_dir/.claude/clodex-toggle.flag"
 
-  # If clodex mode is OFF, pass through
+  # If Clodex mode is OFF, pass through
   [[ -f "$flag_file" ]] || exit 0
 
   command -v jq >/dev/null 2>&1 || exit 0

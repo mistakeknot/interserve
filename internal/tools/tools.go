@@ -14,7 +14,7 @@ import (
 	"github.com/mistakeknot/clodex/internal/query"
 )
 
-// RegisterAll registers all clodex MCP tools.
+// RegisterAll registers all Clodex MCP tools.
 func RegisterAll(s *server.MCPServer, dispatchPath string) {
 	s.AddTools(
 		extractSectionsTool(),
@@ -105,7 +105,7 @@ func classifySectionsTool(dispatchPath string) server.ServerTool {
 func codexQueryTool(dispatchPath string) server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool("codex_query",
-			mcp.WithDescription("Ask Codex to analyze file(s) and return a compact answer. Saves Claude context by delegating file reading to Codex."),
+			mcp.WithDescription("Ask Clodex to analyze file(s) and return a compact answer. Saves Claude context by delegating file reading to Codex."),
 			mcp.WithString("question",
 				mcp.Description("The question about the file(s). Required for answer/extract modes."),
 			),

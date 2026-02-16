@@ -1,6 +1,6 @@
-# clodex
+# Clodex
 
-Codex spark classifier — MCP server exposing `classify_sections` and `extract_sections` tools.
+Codex spark classifier and context compression — MCP server exposing `classify_sections`, `extract_sections`, and `codex_query` tools.
 
 ## Quick Commands
 
