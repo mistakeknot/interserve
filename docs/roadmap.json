@@ -1,0 +1,15 @@
+{
+  "module_summary": "Interserve supports Codex-side classification and context compression for dispatch efficiency.",
+  "roadmap": {
+    "now": [
+      {"id": "ISRV-N1", "title": "Improve classification confidence calibration for high-value tasks.", "priority": "P1"}
+    ],
+    "next": [
+      {"id": "ISRV-N2", "title": "Expose explainability hooks for routing decisions and fallback choices.", "priority": "P2"},
+      {"id": "ISRV-N3", "title": "Tighten interlock between interserve scores and sprint auto-routing.", "priority": "P2"},
+      {"id": "ISRV-L1", "title": "Build self-supervising context-compression benchmarks and quality guardrails.", "priority": "P2"}
+    ],
+    "later": [
+    ]
+  }
+}
