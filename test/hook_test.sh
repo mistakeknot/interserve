@@ -23,7 +23,7 @@ trap cleanup EXIT
 
 # Create a project dir with interserve toggle flag
 mkdir -p "$PROJECT_DIR/.claude"
-echo "2026-02-16T00:00:00-08:00" > "$PROJECT_DIR/.claude/interserve-toggle.flag"
+echo "2026-02-16T00:00:00-08:00" > "$PROJECT_DIR/.claude/clodex-toggle.flag"
 
 # Create test files
 LARGE_GO="$PROJECT_DIR/internal/foo/big.go"

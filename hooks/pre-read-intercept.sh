@@ -7,7 +7,7 @@ main() {
   local project_dir flag_file payload file_path offset session_id
 
   project_dir="${CLAUDE_PROJECT_DIR:-.}"
-  flag_file="$project_dir/.claude/interserve-toggle.flag"
+  flag_file="$project_dir/.claude/clodex-toggle.flag"
 
   # If interserve mode is OFF, pass through
   [[ -f "$flag_file" ]] || exit 0

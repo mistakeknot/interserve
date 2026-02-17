@@ -64,7 +64,7 @@ bin/launch-mcp.sh              ← auto-builds binary if missing, then exec's it
 
 ## Hook Behavior
 
-The `pre-read-intercept.sh` hook fires on `PreToolUse:Read` when interserve mode is active (`interserve-toggle.flag` exists):
+The `pre-read-intercept.sh` hook fires on `PreToolUse:Read` when interserve mode is active (`clodex-toggle.flag` exists):
 - **Blocks** reads of code files ≥200 lines (first read only)
 - **Allows** targeted reads (with offset), /tmp/ files, config/doc extensions, small files
 - **Dedup:** Second read of same file in same session passes through (flag at `/tmp/interserve-read-denied-{session}-{hash}`)
