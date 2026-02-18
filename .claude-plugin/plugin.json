@@ -2,6 +2,7 @@
   "name": "interserve",
   "version": "0.1.0",
   "description": "Interserve — Codex spark classifier and context compression via MCP",
+  "author": { "name": "MK" },
   "hooks": "./hooks/hooks.json",
   "mcpServers": {
     "interserve": {
