@@ -1,16 +1,4 @@
 {
   "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Read",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/pre-read-intercept.sh",
-            "timeout": 3
-          }
-        ]
-      }
-    ]
   }
 }
