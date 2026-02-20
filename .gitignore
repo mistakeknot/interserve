@@ -1,3 +1,6 @@
 bin/interserve-mcp
 .cache/
 .gocache/
+
+# Clavain session artifacts
+.clavain/
