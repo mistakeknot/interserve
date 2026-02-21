@@ -1,7 +1,7 @@
 {
   "name": "interserve",
-  "version": "0.1.1",
-  "description": "Interserve \u2014 Codex spark classifier and context compression via MCP",
+  "version": "0.1.2",
+  "description": "Interserve — Codex spark classifier and context compression via MCP",
   "author": {
     "name": "MK"
   },
