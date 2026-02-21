@@ -45,6 +45,12 @@ func Query(ctx context.Context, dispatchPath string, question string, files []st
 		}
 	}
 
+	// Check cache before reading files.
+	key := cacheKey(question, files, mode)
+	if cached := cacheGet(key); cached != nil {
+		return *cached
+	}
+
 	// Read files into memory, validate existence and size.
 	fileContents := make(map[string]string, len(files))
 	totalLines := 0
@@ -151,13 +157,15 @@ func Query(ctx context.Context, dispatchPath string, question string, files []st
 		}
 	}
 
-	return QueryResult{
+	result := QueryResult{
 		Status:         "success",
 		Answer:         answer,
 		FilesAnalyzed:  files,
 		LineCountSaved: totalLines,
 		Mode:           mode,
 	}
+	cachePut(key, result, buildMtimes(files))
+	return result
 }
 
 func queryError(err error, files []string, mode string, context string) QueryResult {
