@@ -11,8 +11,9 @@
       "command": "${CLAUDE_PLUGIN_ROOT}/bin/launch-mcp.sh",
       "args": [],
       "env": {
-        "INTERSERVE_DISPATCH_PATH": "/root/projects/Interverse/hub/clavain/scripts/dispatch.sh"
+        "INTERSERVE_DISPATCH_PATH": "os/clavain/scripts/dispatch.sh"
       }
     }
-  }
+  },
+  "hooks": "./hooks/hooks.json"
 }
