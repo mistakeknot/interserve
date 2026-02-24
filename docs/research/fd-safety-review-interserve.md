@@ -43,7 +43,7 @@ The interserve MCP server exposes two tools (`extract_sections`, `classify_secti
 1. **Malicious MCP client**: If a compromised or malicious Claude Code plugin invokes interserve tools with attacker-controlled `file_path`, it can read arbitrary files (credentials, SSH keys, private docs)
 2. **Environment variable poisoning**: If `.zshrc` or a malicious plugin sets `INTERSERVE_DISPATCH_PATH=/tmp/evil.sh`, interserve will execute it via bash
 3. **Dependency confusion during auto-build**: If `go build` fetches dependencies and a malicious package is published with the same name as a private dep, it could be executed during build
-4. **Dispatch script compromise**: If `/root/projects/Interverse/hub/clavain/scripts/dispatch.sh` is writable by another user or modified by a malicious plugin, interserve will execute arbitrary code
+4. **Dispatch script compromise**: If `os/clavain/scripts/dispatch.sh` is writable by another user or modified by a malicious plugin, interserve will execute arbitrary code
 
 ### Attack Scenarios (Theoretical, Out of Scope)
 - **Untrusted MCP client over network**: Not applicable — stdio transport, local-only
@@ -127,7 +127,7 @@ if err != nil {
 ```go
 dispatchPath := os.Getenv("INTERSERVE_DISPATCH_PATH")
 if dispatchPath == "" {
-    dispatchPath = "/root/projects/Interverse/hub/clavain/scripts/dispatch.sh"
+    dispatchPath = "os/clavain/scripts/dispatch.sh"
 }
 ```
 
@@ -146,7 +146,7 @@ cmd := exec.CommandContext(
 
 **Exploitability**: Medium
 - Requires attacker control over environment variables (malicious `.zshrc`, compromised plugin setting env vars, or malicious systemd unit file if interserve were launched as a service)
-- The plugin manifest **does set this env var explicitly** (`INTERSERVE_DISPATCH_PATH: /root/projects/Interverse/hub/clavain/scripts/dispatch.sh`), which mitigates the risk for normal Claude Code usage
+- The plugin manifest **does set this env var explicitly** (`INTERSERVE_DISPATCH_PATH: os/clavain/scripts/dispatch.sh`), which mitigates the risk for normal Claude Code usage
 - However, if the manifest were missing or a user manually launched the binary with a malicious env var, arbitrary code execution is trivial
 
 **Impact**: High → Critical
@@ -157,7 +157,7 @@ cmd := exec.CommandContext(
 1. **Remove env var override capability** (recommended):
    ```go
    // Remove the os.Getenv call entirely — pin the path at compile time or in a config file
-   const dispatchPath = "/root/projects/Interverse/hub/clavain/scripts/dispatch.sh"
+   const dispatchPath = "os/clavain/scripts/dispatch.sh"
 
    // OR: Read from a config file in a trusted location with strict permissions
    configPath := filepath.Join(os.Getenv("HOME"), ".config", "interserve", "dispatch-path.conf")
@@ -196,7 +196,7 @@ cmd := exec.CommandContext(
 
 ### 3. Dispatch Script Execution Security
 
-**Location**: `/root/projects/Interverse/hub/clavain/scripts/dispatch.sh` (executed via `bash`)
+**Location**: `os/clavain/scripts/dispatch.sh` (executed via `bash`)
 
 **Issue**: The dispatch script is a 600+ line bash script that:
 - Resolves tier names to model strings from a YAML config file
@@ -223,7 +223,7 @@ cmd := exec.CommandContext(
 2. **Restrict dispatch.sh ownership and permissions** (already correct per Finding 2 analysis):
    ```bash
    # Verify current state (already 775 claude-user:claude-user per analysis)
-   stat -c "%a %U:%G" /root/projects/Interverse/hub/clavain/scripts/dispatch.sh
+   stat -c "%a %U:%G" os/clavain/scripts/dispatch.sh
    # → 775 claude-user:claude-user (correct, group-writable but not world-writable)
    ```
 
@@ -344,7 +344,7 @@ cmd := exec.CommandContext(
 
 ### 1. No Rollback Strategy for dispatch.sh or tiers.yaml
 
-**Issue**: Changes to `dispatch.sh` or `hub/clavain/config/dispatch/tiers.yaml` take effect immediately, with no versioning or rollback mechanism.
+**Issue**: Changes to `dispatch.sh` or `os/clavain/config/dispatch/tiers.yaml` take effect immediately, with no versioning or rollback mechanism.
 
 **Impact**: Medium
 - If a buggy or malicious commit modifies dispatch.sh, all interserve invocations are affected immediately
@@ -368,8 +368,8 @@ cmd := exec.CommandContext(
    - Document the rollback steps in `AGENTS.md`:
      ```bash
      # Rollback dispatch.sh to previous commit
-     git log --oneline hub/clavain/scripts/dispatch.sh | head -5
-     git checkout <commit-sha> hub/clavain/scripts/dispatch.sh
+     git log --oneline os/clavain/scripts/dispatch.sh | head -5
+     git checkout <commit-sha> os/clavain/scripts/dispatch.sh
      # Restart Claude Code sessions to pick up the change
      ```
 
@@ -475,7 +475,7 @@ cmd := exec.CommandContext(
 1. **Pin `INTERSERVE_DISPATCH_PATH` in code** (remove env var override):
    ```go
    // cmd/interserve-mcp/main.go
-   const dispatchPath = "/root/projects/Interverse/hub/clavain/scripts/dispatch.sh"
+   const dispatchPath = "os/clavain/scripts/dispatch.sh"
    // Remove: dispatchPath := os.Getenv("INTERSERVE_DISPATCH_PATH")
    ```
    - **Why**: Eliminates the most exploitable privilege escalation vector

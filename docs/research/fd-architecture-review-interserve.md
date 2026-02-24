@@ -69,7 +69,7 @@ internal/
 ```go
 dispatchPath := os.Getenv("INTERSERVE_DISPATCH_PATH")
 if dispatchPath == "" {
-    dispatchPath = "/root/projects/Interverse/hub/clavain/scripts/dispatch.sh"
+    dispatchPath = "os/clavain/scripts/dispatch.sh"
 }
 ```
 
