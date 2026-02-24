@@ -20,9 +20,12 @@ main() {
   file_path="$(jq -r '(.tool_input.file_path // empty)' <<<"$payload" 2>/dev/null || true)"
   [[ -n "$file_path" ]] || exit 0
 
-  # Allow targeted reads (with offset) — Claude knows what it's looking for
+  # Allow targeted reads (with offset or limit) — Claude knows what it's looking for
   offset="$(jq -r '(.tool_input.offset // empty)' <<<"$payload" 2>/dev/null || true)"
   [[ -z "$offset" ]] || exit 0
+  local limit
+  limit="$(jq -r '(.tool_input.limit // empty)' <<<"$payload" 2>/dev/null || true)"
+  [[ -z "$limit" ]] || exit 0
 
   # Allow /tmp/ files
   [[ "$file_path" != /tmp/* ]] || exit 0
