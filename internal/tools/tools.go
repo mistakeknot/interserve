@@ -69,7 +69,7 @@ func extractSectionsTool() server.ServerTool {
 func classifySectionsTool(dispatchPath string) server.ServerTool {
 	return server.ServerTool{
 		Tool: mcp.NewTool("classify_sections",
-			mcp.WithDescription("Classify markdown sections into flux-drive domains via Codex spark dispatch."),
+			mcp.WithDescription("Classify markdown sections into flux-drive agent domains using keyword scoring. Set INTERSERVE_CLASSIFY_LLM=1 for Codex spark dispatch."),
 			mcp.WithString("file_path",
 				mcp.Description("Absolute or workspace-relative markdown file path"),
 				mcp.Required(),

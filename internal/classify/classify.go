@@ -57,7 +57,8 @@ type dispatchSection struct {
 	Assignments []SectionAssignment `json:"assignments"`
 }
 
-// Classify runs Codex spark dispatch and produces section slicing metadata.
+// Classify produces section slicing metadata using deterministic keyword scoring.
+// Set INTERSERVE_CLASSIFY_LLM=1 to use Codex spark dispatch instead.
 func Classify(ctx context.Context, dispatchPath string, sections []extract.Section, agents []AgentDomain) ClassifyResult {
 	if len(agents) == 0 {
 		agents = DefaultAgents()
@@ -71,6 +72,18 @@ func Classify(ctx context.Context, dispatchPath string, sections []extract.Secti
 		}
 	}
 
+	// Default: deterministic keyword classification.
+	if os.Getenv("INTERSERVE_CLASSIFY_LLM") != "1" {
+		classified := ClassifyLocal(sections, agents)
+		return buildResult(classified, sections, agents)
+	}
+
+	// Opt-in: LLM-based classification via Codex spark dispatch.
+	return classifyViaDispatch(ctx, dispatchPath, sections, agents)
+}
+
+// classifyViaDispatch shells out to dispatch.sh for LLM-based classification.
+func classifyViaDispatch(ctx context.Context, dispatchPath string, sections []extract.Section, agents []AgentDomain) ClassifyResult {
 	prompt := BuildPrompt(sections, agents)
 
 	promptFile, err := os.CreateTemp("", "interserve-prompt-*.txt")
