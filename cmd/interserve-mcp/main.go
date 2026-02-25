@@ -17,7 +17,7 @@ func main() {
 
 	dispatchPath := os.Getenv("INTERSERVE_DISPATCH_PATH")
 	if dispatchPath == "" {
-		dispatchPath = "/root/projects/Interverse/os/clavain/scripts/dispatch.sh"
+		dispatchPath = "os/clavain/scripts/dispatch.sh"
 	}
 
 	if info, err := os.Stat(dispatchPath); err != nil {
