@@ -1,4 +1,5 @@
 bin/interserve-mcp
+/interserve-mcp
 .cache/
 .gocache/
 
