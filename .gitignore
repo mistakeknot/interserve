@@ -5,3 +5,4 @@ bin/interserve-mcp
 
 # Clavain session artifacts
 .clavain/
+__pycache__/
